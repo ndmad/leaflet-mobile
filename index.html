@@ -7,6 +7,7 @@
     <title>Carte Mobile Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
@@ -24,17 +25,17 @@
             <span class="close">&times;</span>
             <h2>Collecte de données</h2>
             <form id="dataForm">
-                <label for="degradationType">Type de dégradation :</label>
+                <label for="degradationType"><i class="fas fa-exclamation-triangle"></i> Type de dégradation :</label>
                 <select id="degradationType" name="degradationType">
                     <option value="erosion">Érosion</option>
                     <option value="pollution">Pollution</option>
                     <option value="deforestation">Déforestation</option>
                 </select>
 
-                <label for="description">Description :</label>
+                <label for="description"><i class="fas fa-align-left"></i> Description :</label>
                 <textarea id="description" name="description" rows="4"></textarea>
 
-                <label for="photo">Prendre une photo :</label>
+                <label for="photo"><i class="fas fa-camera"></i> Prendre une photo :</label>
                 <input type="file" id="photo" accept="image/*" capture="environment">
 
                 <button type="submit">Enregistrer</button>
@@ -43,8 +44,9 @@
         </div>
     </div>
 
-
-
+    
+    
+    
 
 
 

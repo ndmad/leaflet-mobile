@@ -19,6 +19,7 @@ body, html {
     border-radius: 8px;
 }
  */
+/* Styles généraux pour le modal */
 .modal {
     display: none;
     position: fixed;
@@ -28,33 +29,131 @@ body, html {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px); /* Effet de flou en arrière-plan */
 }
 
 .modal-content {
     background-color: #fff;
     margin: 10% auto;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     width: 90%;
     max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
 }
 
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Bouton de fermeture */
 .close {
     float: right;
     font-size: 24px;
     cursor: pointer;
+    color: #666;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Titre du formulaire */
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+/* Styles pour les champs du formulaire */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+form input[type="text"],
+form select,
+form textarea,
+form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+form textarea {
+    resize: vertical; /* Permet de redimensionner verticalement */
+    min-height: 100px;
+}
+
+form input[type="file"] {
+    padding: 8px;
+}
+
+/* Styles pour les boutons */
+form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50; /* Vert */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #45a049; /* Vert plus foncé */
 }
 
 #exportButton {
+    background-color: #2196F3; /* Bleu */
     margin-top: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 #exportButton:hover {
-    background-color: #45a049;
+    background-color: #1e88e5; /* Bleu plus foncé */
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 600px) {
+    .modal-content {
+        margin: 20% auto;
+        padding: 15px;
+    }
+
+    form input[type="text"],
+    form select,
+    form textarea,
+    form input[type="file"] {
+        font-size: 14px;
+    }
+
+    form button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+form button {
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+form button:hover {
+    transform: scale(1.02); /* Légère augmentation de taille */
 }
