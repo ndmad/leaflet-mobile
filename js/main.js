@@ -55,6 +55,11 @@ form.addEventListener('submit', (e) => {
     const description = document.getElementById('description').value; // Récupérer la description
     const coords = map.getCenter(); // Récupérer les coordonnées du clic
 
+    if (!description) {
+        alert("Veuillez remplir la description.");
+        return;
+    }
+
     console.log("Description saisie :", description); // Afficher la description dans la console pour vérifier
 
     // Créer une Feature GeoJSON
@@ -102,3 +107,94 @@ exportButton.addEventListener('click', () => {
     a.download = 'donnees_terrain.geojson'; // Nom du fichier
     a.click();
 });
+
+// Localisation en temps réel
+let userMarker = null;
+const locateButton = document.getElementById('locateButton');
+
+locateButton.addEventListener('click', () => {
+    map.locate({ setView: true, watch: true, maxZoom: 16 });
+
+    map.on('locationfound', (e) => {
+        if (userMarker) {
+            userMarker.setLatLng(e.latlng);
+        } else {
+            userMarker = L.marker(e.latlng).addTo(map)
+                .bindPopup("Vous êtes ici !").openPopup();
+        }
+    });
+
+    map.on('locationerror', (e) => {
+        alert("Impossible de trouver votre position.");
+    });
+});
+
+
+// Choix du fond de carte
+const baseLayers = {
+    "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }),
+    "Google Satellite": L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        attribution: '© Google'
+    }),
+    "Carte Terrain": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenTopoMap'
+    })
+};
+
+// Ajouter le contrôle des couches
+L.control.layers(baseLayers).addTo(map);
+// Activer OpenStreetMap par défaut
+baseLayers["OpenStreetMap"].addTo(map);
+
+L.control.locate({
+    position: 'topleft', // Position du bouton
+    drawCircle: true, // Dessiner un cercle autour de la position
+    follow: true, // Suivre la position de l'utilisateur
+    setView: true, // Centrer la carte sur la position
+    keepCurrentZoomLevel: true, // Conserver le niveau de zoom actuel
+    markerClass: L.circleMarker, // Utiliser un cercle pour la position
+    icon: 'fa fa-map-marker', // Icône Font Awesome
+    metric: true, // Utiliser des unités métriques
+    strings: {
+        title: "Ma position", // Titre du bouton
+        popup: "Vous êtes ici", // Message du popup
+    }
+}).addTo(map);
+
+
+const geocoder = L.Control.Geocoder.nominatim(); // Utiliser Nominatim comme service de géocodage
+L.Control.geocoder({
+    position: 'topleft', // Position du contrôle/*  */
+    geocoder: geocoder,
+    defaultMarkGeocode: false, // Ne pas ajouter de marqueur par défaut
+})
+.on('markgeocode', (e) => {
+    const { center } = e.geocode;
+    map.setView(center, 13); // Centrer la carte sur le résultat de la recherche
+})
+.addTo(map);
+
+
+// Enregistrement automatique
+let autoSaveEnabled = false;
+const autoSaveButton = document.getElementById('autoSaveButton');
+
+autoSaveButton.addEventListener('click', () => {
+    autoSaveEnabled = !autoSaveEnabled;
+    autoSaveButton.textContent = autoSaveEnabled ? "Désactiver l'enregistrement" : "Enregistrement automatique";
+    alert(autoSaveEnabled ? "Enregistrement automatique activé." : "Enregistrement automatique désactivé.");
+});
+
+// Thème sombre
+const themeButton = document.getElementById('themeButton');
+
+themeButton.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeButton.textContent = document.body.classList.contains('dark-mode') ? "Thème clair" : "Thème sombre";
+});
+
+
+document.querySelector('.leaflet-control-zoom-in').innerHTML = '<i class="fas fa-plus"></i>';
+document.querySelector('.leaflet-control-zoom-out').innerHTML = '<i class="fas fa-minus"></i>';
