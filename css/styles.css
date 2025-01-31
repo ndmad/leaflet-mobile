@@ -263,3 +263,21 @@ body.dark-mode {
     font-weight: bold; /* Rendre les icônes "+" et "-" plus épaisses */
 }
 
+#addPointButton {
+    position: absolute;
+    bottom: 90px;
+    left: 10px;
+    z-index: 1000;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#addPointButton:hover {
+    background-color: #45a049;
+}
+
+
