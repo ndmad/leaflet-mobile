@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -10,16 +11,39 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-   
+
 
 
 </head>
+
 <body>
     <div id="map"></div>
+
+    <div id="formModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Collecte de données</h2>
+            <form id="dataForm">
+                <label for="degradationType">Type de dégradation :</label>
+                <select id="degradationType" name="degradationType">
+                    <option value="erosion">Érosion</option>
+                    <option value="pollution">Pollution</option>
+                    <option value="deforestation">Déforestation</option>
+                </select>
+
+                <label for="description">Description :</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+
+                <label for="photo">Prendre une photo :</label>
+                <input type="file" id="photo" accept="image/*" capture="environment">
+
+                <button type="submit">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
-
-
-
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 </body>
+
 </html>
