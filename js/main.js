@@ -12,52 +12,19 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-/* 
-const marker = L.marker([48.8566, 2.3522]).addTo(map);
-marker.bindPopup("<b>Paris</b><br>La ville lumière.").openPopup();
- */
-
-const locateButton = L.control({ position: 'topright' });
-
-/* locateButton.onAdd = function () {
-    const div = L.DomUtil.create('div', 'locate-button');
-    div.innerHTML = '📍';
-    div.style.fontSize = '24px';
-    div.style.cursor = 'pointer';
-    div.onclick = () => {
-        map.locate({ setView: true, maxZoom: 16 });
-    };
-    return div;
-};
-
-locateButton.addTo(map);
-
-map.on('locationfound', (e) => {
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map)
-        .bindPopup("Vous êtes ici !").openPopup();
-});
- */
-
-/* const markers = L.markerClusterGroup();
-
-for (let i = 0; i < 100; i++) {
-    const lat = 48.8566 + (Math.random() - 0.5) * 0.1;
-    const lng = 2.3522 + (Math.random() - 0.5) * 0.1;
-    markers.addLayer(L.marker([lat, lng]).bindPopup(`Marqueur ${i}`));
-}
-
-map.addLayer(markers);
- */
-
+// Variables globales
 const modal = document.getElementById('formModal');
 const closeModal = document.querySelector('.close');
+const photoInput = document.getElementById('photo');
+let photoFile = null;
+let collectedData = {
+    type: "FeatureCollection",
+    features: []
+};
 
 // Ouvrir le modal lors d'un clic sur la carte
 map.on('click', (e) => {
     modal.style.display = 'block';
-    // Enregistrer les coordonnées du clic
-    const coords = e.latlng;
-    console.log('Coordonnées :', coords);
 });
 
 // Fermer le modal
@@ -72,70 +39,23 @@ window.onclick = (event) => {
     }
 };
 
-const photoInput = document.getElementById('photo');
-let photoFile = null;
-
+// Gérer la prise de photo
 photoInput.addEventListener('change', (e) => {
     photoFile = e.target.files[0];
     console.log('Photo sélectionnée :', photoFile);
 });
 
-
-
+// Gérer la soumission du formulaire
 const form = document.getElementById('dataForm');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const degradationType = document.getElementById('degradationType').value;
-    const description = document.getElementById('description').value;
-    const coords = map.getCenter(); // Ou utiliser les coordonnées du clic
-
-    const data = {
-        type: degradationType,
-        description: description,
-        coords: coords,
-        photo: photoFile ? URL.createObjectURL(photoFile) : null
-    };
-
-    console.log('Données enregistrées :', data);
-
-    // Ajouter un marqueur sur la carte avec les données
-    const marker = L.marker(coords).addTo(map);
-    marker.bindPopup(`
-        <b>Type :</b> ${data.type}<br>
-        <b>Description :</b> ${data.description}<br>
-        ${data.photo ? `<img src="${data.photo}" alt="Photo" style="width:100%;">` : ''}
-    `).openPopup();
-
-    // Fermer le modal
-    modal.style.display = 'none';
-    form.reset();
-});
-
-
-map.locate({ setView: true, maxZoom: 16 });
-
-map.on('locationfound', (e) => {
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("Vous êtes ici !").openPopup();
-});
-
-map.on('locationerror', (e) => {
-    alert("Impossible de trouver votre position.");
-});
-
-let collectedData = {
-    type: "FeatureCollection",
-    features: []
-};
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const degradationType = document.getElementById('degradationType').value;
-    const description = document.getElementById('description').value;
+    const description = document.getElementById('description').value; // Récupérer la description
     const coords = map.getCenter(); // Récupérer les coordonnées du clic
+
+    console.log("Description saisie :", description); // Afficher la description dans la console pour vérifier
 
     // Créer une Feature GeoJSON
     const feature = {
@@ -146,7 +66,7 @@ form.addEventListener('submit', (e) => {
         },
         properties: {
             type: degradationType,
-            description: description,
+            description: description, // Ajouter la description
             photo: photoFile ? URL.createObjectURL(photoFile) : null
         }
     };
@@ -168,8 +88,11 @@ form.addEventListener('submit', (e) => {
     photoFile = null; // Réinitialiser la photo
 });
 
+// Exporter les données au format GeoJSON
+const exportButton = document.getElementById('exportButton');
 
-const exportData = () => {
+exportButton.addEventListener('click', () => {
+    console.log("Données à exporter :", collectedData); // Afficher les données dans la console
     const dataStr = JSON.stringify(collectedData, null, 2); // Formater le JSON
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
@@ -178,17 +101,4 @@ const exportData = () => {
     a.href = url;
     a.download = 'donnees_terrain.geojson'; // Nom du fichier
     a.click();
-};
-
-// Ajouter un bouton pour exporter
-const exportButton = L.control({ position: 'bottomright' });
-
-exportButton.onAdd = function () {
-    const div = L.DomUtil.create('div', 'export-button');
-    div.innerHTML = '📥 Exporter GeoJSON';
-    div.style.cursor = 'pointer';
-    div.onclick = exportData;
-    return div;
-};
-
-exportButton.addTo(map);
+});
