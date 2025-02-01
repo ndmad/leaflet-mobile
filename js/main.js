@@ -155,46 +155,6 @@ locateButton.addEventListener('click', () => {
 });
 
 
-const geolocationMessage = document.getElementById('geolocationMessage');
-const retryGeolocationButton = document.getElementById('retryGeolocation');
-
-retryGeolocationButton.addEventListener('click', () => {
-    geolocationMessage.style.display = 'none';
-    locateButton.click(); // Réessayer la localisation
-});
-
-// Afficher le message en cas d'erreur
-function showGeolocationMessage() {
-    geolocationMessage.style.display = 'block';
-}
-
-(error) => {
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            showGeolocationMessage();
-            break;
-        case error.POSITION_UNAVAILABLE:
-            alert("La position n'a pas pu être déterminée.");
-            break;
-        case error.TIMEOUT:
-            alert("La demande de localisation a expiré.");
-            break;
-        default:
-            alert("Une erreur inconnue s'est produite lors de la localisation.");
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Choix du fond de carte
 const baseLayers = {
@@ -211,24 +171,7 @@ const baseLayers = {
 
 // Ajouter le contrôle des couches
 L.control.layers(baseLayers).addTo(map);
-// Activer OpenStreetMap par défaut
 baseLayers["OpenStreetMap"].addTo(map);
-
-L.control.locate({
-    position: 'topleft', // Position du bouton
-    drawCircle: true, // Dessiner un cercle autour de la position
-    follow: true, // Suivre la position de l'utilisateur
-    setView: true, // Centrer la carte sur la position
-    keepCurrentZoomLevel: true, // Conserver le niveau de zoom actuel
-    markerClass: L.circleMarker, // Utiliser un cercle pour la position
-    icon: 'fa fa-map-marker', // Icône Font Awesome
-    metric: true, // Utiliser des unités métriques
-    strings: {
-        title: "Ma position", // Titre du bouton
-        popup: "Vous êtes ici", // Message du popup
-    }
-}).addTo(map);
-
 
 const geocoder = L.Control.Geocoder.nominatim(); // Utiliser Nominatim comme service de géocodage
 L.Control.geocoder({
@@ -242,6 +185,43 @@ L.Control.geocoder({
 })
 .addTo(map);
 
+const locateControl = L.control.locate({
+    position: 'topleft', // Position du bouton
+    drawCircle: true, // Dessiner un cercle autour de la position
+    follow: true, // Suivre la position de l'utilisateur
+    setView: true, // Centrer la carte sur la position
+    keepCurrentZoomLevel: true, // Conserver le niveau de zoom actuel
+    markerClass: L.circleMarker, // Utiliser un cercle pour la position
+    icon: 'fa fa-map-marker', // Icône Font Awesome
+    metric: true, // Utiliser des unités métriques
+    strings: {
+        title: "Ma position", // Titre du bouton
+        popup: "Vous êtes ici", // Message du popup
+    },
+    locateOptions: {
+        enableHighAccuracy: true, // Utiliser une précision élevée
+        timeout: 10000, // Temps d'attente maximum (10 secondes)
+        maximumAge: 0 // Ne pas utiliser de position en cache
+    }
+}).addTo(map);
+
+// Gérer les erreurs de géolocalisation
+locateControl.on('locationerror', (e) => {
+    alert("Impossible de trouver votre position. Veuillez vérifier les paramètres de géolocalisation de votre appareil.");
+});
+
+const geolocationMessage = document.getElementById('geolocationMessage');
+const retryGeolocationButton = document.getElementById('retryGeolocation');
+
+retryGeolocationButton.addEventListener('click', () => {
+    geolocationMessage.style.display = 'none';
+    locateControl.start(); // Réessayer la localisation
+});
+
+// Afficher le message en cas d'erreur
+locateControl.on('locationerror', (e) => {
+    geolocationMessage.style.display = 'block';
+});
 
 // Enregistrement automatique
 let autoSaveEnabled = false;
@@ -271,4 +251,5 @@ const addPointButton = document.getElementById('addPointButton');
 addPointButton.addEventListener('click', () => {
     modal.style.display = 'block';
 });
+
 
