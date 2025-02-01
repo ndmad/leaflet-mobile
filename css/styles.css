@@ -284,9 +284,9 @@ body.dark-mode {
 /* Styles pour smartphone (écrans de moins de 768px) */
 @media (max-width: 767px) {
     .leaflet-control-geocoder {
-        left: 10px;
+        position: absolute;
         top: 0px;
-        transform: none;
+        left: 0px;
     }
 
     .leaflet-control-zoom {
