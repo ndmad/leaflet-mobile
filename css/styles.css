@@ -195,8 +195,8 @@ body.dark-mode {
 
 .leaflet-control-locate {
     position: absolute;
-    left: 370px; /* Espacement par rapport au bord gauche */
-    top: 500px; /* Position verticale au centre */
+    left: 300px; /* Espacement par rapport au bord gauche */
+    top: 470px; /* Position verticale au centre */
     transform: translateY(-50%); /* Centrer verticalement */
     z-index: 1000; /* S'assurer que les boutons sont au-dessus de la carte */
     border: none;
@@ -245,7 +245,7 @@ body.dark-mode {
 
 .leaflet-control-zoom {
     position: absolute;
-    left: 370px; /* Espacement par rapport au bord gauche */
+    left: 300px; /* Espacement par rapport au bord gauche */
     top: 400px; /* Position verticale au centre */
     transform: translateY(-50%); /* Centrer verticalement */
     z-index: 1000; /* S'assurer que les boutons sont au-dessus de la carte */
