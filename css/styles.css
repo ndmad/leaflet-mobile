@@ -193,16 +193,6 @@ body.dark-mode {
     border-color: #666;
 } */
 
-.leaflet-control-locate {
-    position: absolute;
-    left: 300px; /* Espacement par rapport au bord gauche */
-    top: 470px; /* Position verticale au centre */
-    transform: translateY(-50%); /* Centrer verticalement */
-    z-index: 1000; /* S'assurer que les boutons sont au-dessus de la carte */
-    border: none;
-    background: none;
-}
-
 .leaflet-control-locate a {
     background-color: #2196F3;
     color: rgb(211, 51, 51);
@@ -244,13 +234,10 @@ body.dark-mode {
 
 
 .leaflet-control-zoom {
-    position: absolute;
-    left: 300px; /* Espacement par rapport au bord gauche */
-    top: 400px; /* Position verticale au centre */
-    transform: translateY(-50%); /* Centrer verticalement */
-    z-index: 1000; /* S'assurer que les boutons sont au-dessus de la carte */
-    border: none;
-    background: none;
+    margin-right: 10px; /* Espacement par rapport au bord droit */
+    margin-top: 10px; /* Espacement par rapport au haut de la carte */
+    border: none; /* Supprimer la bordure */
+    background: none; /* Supprimer le fond */
 }
 
 .leaflet-control-zoom a {
@@ -265,14 +252,16 @@ body.dark-mode {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère */
     margin-bottom: 5px; /* Espacement entre les boutons */
     border: 1px solid #ccc; /* Bordure légère */
-    display: block; /* Afficher les boutons en bloc (empilés verticalement) */
 }
 
 .leaflet-control-zoom a:hover {
     background-color: rgba(240, 240, 240, 0.9); /* Fond légèrement gris au survol */
 }
 
-
+.leaflet-control-zoom a.leaflet-control-zoom-in,
+.leaflet-control-zoom a.leaflet-control-zoom-out {
+    font-weight: bold; /* Rendre les icônes "+" et "-" plus épaisses */
+}
 
 #addPointButton {
     position: absolute;
@@ -292,3 +281,24 @@ body.dark-mode {
 }
 
 
+/* Styles pour smartphone (écrans de moins de 768px) */
+@media (max-width: 767px) {
+    .leaflet-control-geocoder {
+        left: 10px;
+        top: 0px;
+        transform: none;
+    }
+
+    .leaflet-control-zoom {
+        left: 300px;
+        top: 400px;
+        transform: none;
+    }
+
+    .leaflet-control-locate {
+        left: 300px;
+        top: 400px;
+        transform: none;
+    }
+   
+}

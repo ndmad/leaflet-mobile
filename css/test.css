@@ -1,0 +1,69 @@
+/* Styles par défaut (pour desktop) */
+.leaflet-control-zoom {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    border: none;
+    background: none;
+}
+
+.leaflet-control-zoom a {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 18px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    display: block;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: rgba(240, 240, 240, 0.9);
+}
+
+
+#addPointButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#addPointButton:hover {
+    background-color: #45a049;
+}
+
+/* Styles pour smartphone (écrans de moins de 768px) */
+@media (max-width: 767px) {
+    .leaflet-control-zoom {
+        left: 10px;
+        top: auto;
+        bottom: 10px;
+        transform: none;
+    }
+
+    #locateButton {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    #addPointButton {
+        top: 10px;
+        bottom: auto;
+        right: 10px;
+    }
+}
