@@ -265,8 +265,8 @@ body.dark-mode {
 
 #addPointButton {
     position: absolute;
-    bottom: 90px;
-    left: 10px;
+    bottom: 30px;
+    left: 15px;
     z-index: 1000;
     padding: 10px;
     background-color: #4CAF50;
@@ -291,13 +291,13 @@ body.dark-mode {
 
     .leaflet-control-zoom {
         left: 300px;
-        top: 400px;
+        top: 350px;
         transform: none;
     }
 
     .leaflet-control-locate {
         left: 300px;
-        top: 400px;
+        top: 350px;
         transform: none;
     }
    
