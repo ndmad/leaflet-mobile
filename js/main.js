@@ -108,6 +108,12 @@ exportButton.addEventListener('click', () => {
     a.click();
 });
 
+const addPointButton = document.getElementById('addPointButton');
+
+addPointButton.addEventListener('click', () => {
+    modal.style.display = 'block';
+});
+
 // Localisation en temps réel
 const locateButton = document.getElementById('locateButton');
 
@@ -244,12 +250,5 @@ themeButton.addEventListener('click', () => {
 
 document.querySelector('.leaflet-control-zoom-in').innerHTML = '<i class="fas fa-plus"></i>';
 document.querySelector('.leaflet-control-zoom-out').innerHTML = '<i class="fas fa-minus"></i>';
-
-
-const addPointButton = document.getElementById('addPointButton');
-
-addPointButton.addEventListener('click', () => {
-    modal.style.display = 'block';
-});
 
 
