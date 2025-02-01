@@ -5,7 +5,7 @@ const map = L.map('map', {
     doubleClickZoom: true,
     zoomControl: true,
     dragging: true
-}).setView([48.8566, 2.3522], 13); // Paris, France
+}).setView([14.6919, -17.4474], 13); // Paris, France
 
 // Ajouter une couche de tuiles (par exemple, OpenStreetMap)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
