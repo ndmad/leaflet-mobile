@@ -109,25 +109,91 @@ exportButton.addEventListener('click', () => {
 });
 
 // Localisation en temps réel
-let userMarker = null;
 const locateButton = document.getElementById('locateButton');
 
 locateButton.addEventListener('click', () => {
-    map.locate({ setView: true, watch: true, maxZoom: 16 });
+    if (!navigator.geolocation) {
+        alert("La géolocalisation n'est pas supportée par votre navigateur.");
+        return;
+    }
 
-    map.on('locationfound', (e) => {
-        if (userMarker) {
-            userMarker.setLatLng(e.latlng);
-        } else {
-            userMarker = L.marker(e.latlng).addTo(map)
-                .bindPopup("Vous êtes ici !").openPopup();
+    // Demander la localisation
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+            map.setView([latitude, longitude], 16); // Centrer la carte sur la position
+
+            // Ajouter un marqueur pour la position de l'utilisateur
+            if (userMarker) {
+                userMarker.setLatLng([latitude, longitude]);
+            } else {
+                userMarker = L.marker([latitude, longitude]).addTo(map)
+                    .bindPopup("Vous êtes ici !").openPopup();
+            }
+        },
+        (error) => {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Vous avez refusé l'accès à la géolocalisation. Veuillez activer la géolocalisation dans les paramètres de votre navigateur.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("La position n'a pas pu être déterminée.");
+                    break;
+                case error.TIMEOUT:
+                    alert("La demande de localisation a expiré.");
+                    break;
+                default:
+                    alert("Une erreur inconnue s'est produite lors de la localisation.");
+            }
+        },
+        {
+            enableHighAccuracy: true, // Utiliser une précision élevée
+            timeout: 10000, // Temps d'attente maximum (10 secondes)
+            maximumAge: 0 // Ne pas utiliser de position en cache
         }
-    });
-
-    map.on('locationerror', (e) => {
-        alert("Impossible de trouver votre position.");
-    });
+    );
 });
+
+
+const geolocationMessage = document.getElementById('geolocationMessage');
+const retryGeolocationButton = document.getElementById('retryGeolocation');
+
+retryGeolocationButton.addEventListener('click', () => {
+    geolocationMessage.style.display = 'none';
+    locateButton.click(); // Réessayer la localisation
+});
+
+// Afficher le message en cas d'erreur
+function showGeolocationMessage() {
+    geolocationMessage.style.display = 'block';
+}
+
+(error) => {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            showGeolocationMessage();
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("La position n'a pas pu être déterminée.");
+            break;
+        case error.TIMEOUT:
+            alert("La demande de localisation a expiré.");
+            break;
+        default:
+            alert("Une erreur inconnue s'est produite lors de la localisation.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Choix du fond de carte
